@@ -10,11 +10,10 @@
 
 int is_symlink(const char *filename);
 
-int main(int argc, char **argv, char **envp)
-{   
+int main(int argc, char **argv, char **envp){   
 
     if (argc != 2) {
-        perror("Not enough arguments");
+        printf("Incorrect numbers of arguments");
         exit(-1);
     }
     
@@ -55,8 +54,7 @@ int main(int argc, char **argv, char **envp)
     return 0;
 }
 
-int is_symlink(const char *filename)
-{
+int is_symlink(const char *filename){
     struct stat p_statbuf;
 
     if (lstat(filename, &p_statbuf) < 0) {  
