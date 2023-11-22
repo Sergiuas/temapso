@@ -37,15 +37,20 @@ void signal_handler(int signum) {
 
 void work(int procNr){
 
-    while(1){
-        int pipe_fd = open(PIPE_NAME, O_RDONLY);
+    int pipe_fd = open(PIPE_NAME, O_RDONLY);
+    if (pipe_fd == -1) {
+        perror("Error opening pipe in child process");
+        exit(EXIT_FAILURE);
+    }
+
+    while(signal_received==0){
+
         int nr;
         int ret = read(pipe_fd, &nr, sizeof(int));
 
         if(ret!=0){
             if (nr!=0){
                 printf("Process %d, pid: %d child working.\n",procNr, getpid());
-                sleep(1);
             }
             else {
                 close(pipe_fd);
@@ -53,8 +58,10 @@ void work(int procNr){
             }
         }
 
-        close(pipe_fd);
     }
+
+    close(pipe_fd);
+
 }
 
 int main(int argc, char** argv, char**envp){
