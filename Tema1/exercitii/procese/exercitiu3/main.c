@@ -51,6 +51,7 @@ void work(int procNr){
         if(ret!=0){
             if (nr!=0){
                 printf("Process %d, pid: %d child working.\n",procNr, getpid());
+                sleep(1);
             }
             else {
                 close(pipe_fd);
@@ -63,6 +64,7 @@ void work(int procNr){
     close(pipe_fd);
 
 }
+
 
 int main(int argc, char** argv, char**envp){
 
