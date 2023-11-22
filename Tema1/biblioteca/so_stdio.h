@@ -15,7 +15,15 @@
 
 #define SO_EOF (-1)
 
-struct _so_file;
+
+ // 
+struct _so_file{
+
+    short	_flags;		/* (*) flags, below; this FILE is free if 0 */
+	short	_file;		/* (*) fileno, if Unix descriptor, else -1 */
+
+    
+};
 
 typedef struct _so_file SO_FILE;
 
