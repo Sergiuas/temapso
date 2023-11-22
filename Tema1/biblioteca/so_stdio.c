@@ -1,15 +1,49 @@
 #include "utils.h"
 #include "so_stdio.h"
+#include <stdio.h>
 
-
+int mode_to_flags(const char* mode);
 
 
 SO_FILE *so_fopen(const char *pathname, const char *mode)
 {
 
-    SO_FILE* fp;
-    
-    return NULL;
+    SO_FILE* fp = NULL;
+    int flags, fd;
+
+    if ((flags=mode_to_flags(mode))==0){
+                perror("permc");
+        return NULL;
+    }
+
+    fd = open(pathname, flags, PERMISSIONS);
+    if (fd == -1){
+        printf("%s path \n", pathname);
+        perror("fisier");
+        return NULL;
+    }
+
+    fp = (SO_FILE*)malloc(sizeof(SO_FILE));
+    if (fp==NULL){
+         perror("malloc");
+        return NULL;
+    }
+
+    fp->_buf=(char*)malloc(BUFFER_SIZE*sizeof(char));
+    if (fp->_buf==NULL){
+        perror("malloc buffer");
+        close(fd);
+        free(fp);
+        return NULL;
+    }
+
+    fp->offset=0;
+    fp->_file=fd;
+    fp->_operation=0;
+    fp->_ferror=0;
+    fp->_file_pointer_pos=0;
+
+    return fp;
 }
 
 int so_fclose(SO_FILE *stream)
