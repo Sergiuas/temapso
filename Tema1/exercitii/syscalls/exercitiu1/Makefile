@@ -5,10 +5,13 @@ TARGET := main
 
 all: $(TARGET)
 
-$(TARGET): main.c wrapper.S
+$(TARGET): main.c wrapper.o
 	$(CC) $(CFLAGS) $^ -o $@
+
+wrapper.o: wrapper.s
+	$(CC) $(CFLAGS) -c $^ -o $@
 
 .PHONY: clean all
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) wrapper.o
